@@ -14,18 +14,20 @@ sg.LOOK_AND_FEEL_TABLE['MyCreatedTheme'] = {'BACKGROUND': '#888',
   
 # Switch to use your newly created theme
 # sg.theme('DarkTeal9')
-sg.theme('MyCreatedTheme')
+sg.theme('reddit')
 
 
 # Choose layout for programm GUI
 layout = [
-    [sg.Text('Введите ссылку на папку:')],
-    [sg.Input(key = '-FOLDER_INPUT-')],
+    [sg.Text('Выберите место скачивания:')],
+    [sg.Input(key = '-FOLDER_INPUT-'), sg.FolderBrowse('Выбрать', key = '-SAVE-')],
     [sg.Text('Скопируйте ссылку на видео:')],
     [sg.Input(key = '-LINK_INPUT-')],
     [sg.Button('Cкачать!', key = '-DOWNLOAD-')],
     [sg.Text('', enable_events=True, key = '-TEXT-')]
     ]
+
+#  C:\Users\Рустем\Documents\Downloads
 
 
 # Naming and starting window
@@ -43,13 +45,14 @@ while True:
         try:
             folder_link = values['-FOLDER_INPUT-'].strip()
             video_link = values['-LINK_INPUT-'].strip()
-            folder_link_in = folder_link.replace(r"\\", r"\\\\")
+            folder_link_in = folder_link.replace(r"/", r"\\\\")
             vt = YouTube(video_link)
             vd = vt.streams.get_highest_resolution()
             vd.download('%s' % folder_link_in)
-            window['-TEXT-'].update('Загрузка завершена!')
         except:
             window['-TEXT-'].update('Проверьте ссылки!')
+        finally:
+            window['-TEXT-'].update('Загрузка завершена!')
 
 window.close()
 
